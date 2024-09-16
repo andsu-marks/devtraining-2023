@@ -13,17 +13,18 @@ export class CoursesController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.courseService.findOne(+id);
+    return this.courseService.findOne(id);
   }
 
   @Post()
   create(@Body() createCourseDTO: createCourseDTO) {
-    return this.courseService.create(createCourseDTO);
+    this.courseService.create(createCourseDTO);
+    return createCourseDTO;
   }
 
   @Put(':id')
   update(@Param('id') id: number, @Body() body) {
-    return this.courseService.update(+id, body);
+    return this.courseService.update(id, body);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
