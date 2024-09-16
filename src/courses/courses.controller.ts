@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { createCourseDTO } from './dto/create-course.dto';
 
@@ -29,7 +29,7 @@ export class CoursesController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param(':id') id: number) {
+  remove(@Param('id') id: number) {
     return this.courseService.remove(id);
   }
 }
