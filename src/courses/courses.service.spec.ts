@@ -1,12 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { CoursesService } from './courses.service';
+import { createCourseDTO } from './dto/create-course.dto';
 
 describe('CoursesService unit tests', () => {
   let service: CoursesService;
   let id: string;
   let created_at: Date;
-  let expectedOutputTags: any;
-  let expectedOutputCourses: any;
+  let expectOutputTags: any;
+  let expectOutputCourses: any;
   let mockCourseRepository: any;
   let mockTagRepository: any;
 
@@ -14,7 +15,7 @@ describe('CoursesService unit tests', () => {
     service = new CoursesService();
     id: randomUUID();
     created_at: new Date();
-    expectedOutputTags = [
+    expectOutputTags = [
       {
         id,
         name: 'NestJS',
@@ -22,27 +23,27 @@ describe('CoursesService unit tests', () => {
       }
     ]
 
-    expectedOutputCourses = {
+    expectOutputCourses = {
       id,
       name: 'Test',
       description: 'Test description',
       created_at,
-      tags: expectedOutputTags
+      tags: expectOutputTags
     }
 
     mockCourseRepository = {
-      create: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      save: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      update: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      preload: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      findAll: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      find: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      findOne:jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
-      remove: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
+      create: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      save: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      update: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      preload: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      findAll: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      find: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      findOne:jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
+      remove: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
     }
 
     mockTagRepository = {
-      create: jest.fn().mockReturnValue(Promise.resolve(expectedOutputCourses)),
+      create: jest.fn().mockReturnValue(Promise.resolve(expectOutputCourses)),
       findOne: jest.fn()
     }
   });
@@ -50,4 +51,22 @@ describe('CoursesService unit tests', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should create a course', async () => {
+    //@ts-expect-error defined part of methods
+    service['courseRepository'] = mockCourseRepository;
+    //@ts-expect-error defined part of methods
+    service['tagRepository'] = mockTagRepository;
+
+    const createCourseDTO: createCourseDTO = {
+      name: 'test',
+      description: 'test description',
+      tags: ['nestjs'],
+    };
+
+    const newCourse = await service.create(createCourseDTO);
+    
+    expect(mockCourseRepository.save).toHaveBeenCalled();
+    expect(expectOutputCourses).toStrictEqual(newCourse);
+  })
 });
