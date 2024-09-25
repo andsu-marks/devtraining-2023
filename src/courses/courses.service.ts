@@ -12,7 +12,7 @@ export class CoursesService {
     private readonly courseRepository: Repository<Course>
     
     @InjectRepository(Tag)
-    private readonly tagRepository: Repository<Tag>
+    private tagRepository: Repository<Tag>
 
   async findAll() {
     return this.courseRepository.find({ relations: ['tags'] });

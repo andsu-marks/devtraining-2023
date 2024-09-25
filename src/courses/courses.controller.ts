@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { createCourseDTO } from './dto/create-course.dto';
 
@@ -18,8 +18,7 @@ export class CoursesController {
 
   @Post()
   create(@Body() createCourseDTO: createCourseDTO) {
-    this.courseService.create(createCourseDTO);
-    return createCourseDTO;
+    return this.courseService.create(createCourseDTO);
   }
 
   @Put(':id')
