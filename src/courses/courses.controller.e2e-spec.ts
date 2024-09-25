@@ -82,7 +82,7 @@ describe('CoursesController e2e tests', () => {
       res.body.map(item => expect(item).toEqual({
         id: item.id,
         name:item.name,
-        description: item.name,
+        description: item.description,
         created_at: item.created_at,
         tags: [...item.tags]
       }));
@@ -109,12 +109,20 @@ describe('CoursesController e2e tests', () => {
 
       const res = await request(app.getHttpServer()).put(`/courses/${courses[0].id}`).send(updateData).expect(200);
 
+      console.log(res.body.name)
+
       expect(res.body.id).toEqual(courses[0].id);
-      expect(res.body.name).toEqual(updateData.name);
-      expect(res.body.description).toEqual(updateData.description);
+      expect(res.body.name).toEqual('New Name');
+      expect(res.body.description).toEqual('New Description');
       expect(res.body.tags).toHaveLength(2);
-      expect(res.body.tags[0].name).toEqual(updateData.tags[0]);
-      expect(res.body.tags[1].name).toEqual(updateData.tags[1]);
+      expect(res.body.tags[0].name).toEqual('one');
+      expect(res.body.tags[1].name).toEqual('two');
+    });
+  });
+
+  describe('DELETE /courses/:id', () => {
+    it('should delete a course', async () => {
+      const res = await request(app.getHttpServer()).delete(`/courses/${courses[0].id}`).expect(204).expect({});
     });
   });
 });
